@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vàng Bạc Hàn Phương - Bảng Giá Vàng</title>
+  <style>
+    body {font-family: Arial, sans-serif; margin:0; background:#f5f5f5;}
+    header {background:#b8962e; color:white; text-align:center; padding:20px;}
+    h1 {margin:0;}
+    .container {max-width:900px; margin:20px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1);}    
+    table {width:100%; border-collapse:collapse;}
+    th, td {padding:12px; border-bottom:1px solid #ddd; text-align:center;}
+    th {background:#f0e6c0;}
+    .note {margin-top:15px; background:#fff8e1; border-left:5px solid #b8962e; padding:12px; border-radius:6px; line-height:1.6;}
+    .info {margin-top:20px;}
+    .admin {margin-top:30px; display:none;}
+    input {padding:6px; width:120px;}
+    button {padding:8px 15px; background:#b8962e; color:white; border:none; border-radius:5px; cursor:pointer;}
+    footer {text-align:center; margin-top:20px; color:#666;}
+  </style>
+</head>
+<body>
+<header>
+  <h1>VÀNG BẠC HÀN PHƯƠNG</h1>
+  <p>Cập nhật giá vàng nhanh chóng - chính xác</p>
+</header>
+
+<div class="container">
+  <h2>Bảng Giá Vàng Hôm Nay</h2>
+  <p id="updateTime"></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Loại vàng</th>
+        <th>Mua vào</th>
+        <th>Bán ra</th>
+      </tr>
+    </thead>
+    <tbody id="priceTable"></tbody>
+  </table>
+
+  <div class="note">
+    <p>📍 Giá được cập nhật hàng ngày lúc 9h sáng</p>
+    <p>📍 Giá có thể thay đổi theo biến động thị trường</p>
+    <p>📍 Vui lòng liên hệ trực tiếp để có giá chính xác tại thời điểm giao dịch</p>
+  </div>
+
+  <div class="info">
+    <h3>Liên hệ</h3>
+    <p>Hotline/Zalo: 0379869169</p>
+    <p>Cơ sở 1: Số 12 Vĩnh Tuy - Hai Bà Trưng - Hà Nội</p>
+    <p>Cơ sở 2: Số 358 Khu phố 8 - Thị trấn Mường Tè - Lai Châu</p>
+  </div>
+
+  <div class="admin">
+    <h3>Trang cập nhật giá (chỉ chủ cửa hàng)</h3>
+    <div id="adminInputs"></div>
+    <br>
+    <button onclick="savePrices()">Lưu giá mới</button>
+  </div>
+</div>
+
+<footer>
+  © 2026 Vàng Bạc Hàn Phương
+  <br><br>
+  <button onclick="openAdmin()">Quản trị</button>
+</footer>
+
+<script>
+  const defaultPrices = [
+    {name:"Nhẫn ép vỉ 9999", buy:7850000, sell:8050000},
+    {name:"Nhẫn tròn trơn 9999", buy:7840000, sell:8040000},
+    {name:"Vàng trang sức 9999", buy:7800000, sell:8000000},
+    {name:"Vàng 10K", buy:3200000, sell:3500000}
+  ];
+
+  function loadPrices(){
+    const saved = JSON.parse(localStorage.getItem("goldPrices"));
+    return saved || defaultPrices;
+  }
+
+  function render(){
+    const prices = loadPrices();
+    const table = document.getElementById("priceTable");
+    const admin = document.getElementById("adminInputs");
+    table.innerHTML = "";
+    admin.innerHTML = "";
+
+    prices.forEach((p,i)=>{
+      table.innerHTML += `<tr><td>${p.name}</td><td>${p.buy.toLocaleString()}</td><td>${p.sell.toLocaleString()}</td></tr>`;
+
+      admin.innerHTML += `
+        <div>
+          ${p.name} - Mua: <input id="buy${i}" value="${p.buy}">
+          Bán: <input id="sell${i}" value="${p.sell}">
+        </div>`;
+    });
+
+    document.getElementById("updateTime").innerText = "Cập nhật lúc: " + new Date().toLocaleString();
+  }
+
+  function savePrices(){
+    const prices = loadPrices();
+    prices.forEach((p,i)=>{
+      p.buy = Number(document.getElementById(`buy${i}`).value);
+      p.sell = Number(document.getElementById(`sell${i}`).value);
+    });
+    localStorage.setItem("goldPrices", JSON.stringify(prices));
+    function openAdmin(){
+  const pass = prompt("Nhập mật khẩu quản trị:");
+  if(pass === "hanphuong2026"){
+    document.querySelector('.admin').style.display = 'block';
+    alert('Đã mở trang cập nhật giá');
+  } else if(pass !== null){
+    alert('Sai mật khẩu');
+  }
+}
+
+render();
+    alert("Đã cập nhật giá vàng!");
+  }
+
+  render();
+</script>
+</body>
+</html>
