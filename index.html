@@ -102,4 +102,11 @@
   render();
 </script>
 </body>
+  <script>
+  // 👉 Tự cập nhật mỗi 30 giây (chống cache)
+  setInterval(() => {
+    const url = window.location.origin + window.location.pathname;
+    window.location.href = url + "?t=" + new Date().getTime();
+  }, 30000);
+</script>
 </html>
