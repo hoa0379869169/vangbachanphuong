@@ -28,7 +28,14 @@
 
 <div class="container">
   <h2>Bảng Giá Vàng Hôm Nay</h2>
-  <p id="updateTime">Cập nhật lần cuối: 13/04/2026 - 15:00</p>
+ <p id="updateTime"></p>
+
+<script>
+  const now = new Date();
+  const timeString = now.toLocaleString('vi-VN');
+  document.getElementById("updateTime").innerText = 
+    "Cập nhật lần cuối: " + timeString;
+</script>
   <table>
     <thead>
       <tr>
